@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { TodoCardComponent } from './components/todo-card/todo-card.component';
 import { SchoolData, SchoolService } from './services/school.service';
-import { Observable, zip } from 'rxjs';
+import { Observable, from, map, of, zip } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -20,13 +20,37 @@ export class AppComponent implements OnInit{
     this.getStudentsDatas(),
     this.getTeachersDatas()
   );
+  private ages = of(20, 30, 50, 55, 25, 17);
+  private peopleDatas = from([
+    {name: 'Luiz', age: 28, profession: 'Developer' },
+    {name: 'Sakura', age: 18, profession: 'Student' },
+    {name: 'Takezo', age: 58, profession: 'Lone Samurai' },
+  ]);
 
   constructor(private schoolService: SchoolService){}
 
   public ngOnInit(): void {
-    this.getSchoolDatas();
-
+    // this.getSchoolDatas();
+    //this.getMultipliedAges();
+    this.getPeopleProfession();
   }
+
+  public getPeopleProfession(): void {
+      this.peopleDatas.pipe(
+        map((person) => person.profession))
+        .subscribe({
+          next: (response) => console.log(response)
+        })
+  }
+
+  public getMultipliedAges():void {
+    this.ages.pipe(
+      map((age) => age * age))
+      .subscribe({
+        next: (response) => console.log('age', response)
+      })
+  }
+
   public getSchoolDatas(): void {
     this.zipSchoolResponses$.subscribe({
       next: (response) => {

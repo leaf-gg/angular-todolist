@@ -15,10 +15,13 @@ import { TodoFormComponent } from '../todo-form/todo-form.component';
 })
 export class HeaderComponent {
   private dialogService = inject(MatDialog);
+
   public handleOpenModal(): void{
     this.dialogService.open(TodoFormComponent, {
       width: '50vw',
       maxHeight: '80vh'
     })
   }
+
+
 }

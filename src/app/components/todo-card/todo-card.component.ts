@@ -1,11 +1,11 @@
-import { TodoSignalsService } from './../../services/todo-signals.service';
 import { Component, OnInit, computed, inject } from '@angular/core';
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { CommonModule, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
-import { todoKeyLocalStorage } from 'src/app/models/enum/todoKeyLocalStorage';
+import { TodoSignalsService } from 'src/app/services/todo-signals.service';
+import { TodoKeyLocalStorage } from 'src/app/models/enum/todoKeyLocalStorage';
 import { Todo } from 'src/app/models/model/todo.model';
 
 @Component({
@@ -31,11 +31,16 @@ export class TodoCardComponent implements OnInit {
   public ngOnInit(): void {
     this.getTodosInLocalStorage();
   }
+
   private getTodosInLocalStorage(): void {
     const todosDatas = localStorage.getItem(
-      todoKeyLocalStorage.TODO_LIST
+      TodoKeyLocalStorage.TODO_LIST
     ) as string;
     todosDatas && this.todosSignal.set(JSON.parse(todosDatas));
+  }
+
+  private saveTodosInLocalStorage(): void {
+    this.todoSignalsService.saveTodosInLocalStorage();
   }
 
   public handleDoneTodo(todoId: number): void {
@@ -47,20 +52,16 @@ export class TodoCardComponent implements OnInit {
     }
   }
 
-  private saveTodosInLocalStorage() : void {
-    this.todoSignalsService.saveTodosInLocalStorage();
-  }
-
-
   public handleDeleteTodo(todo: Todo): void {
-      if(todo){
-        const index = this.todosList().indexOf(todo);
-        if(index !== -1){
-          this.todosSignal.mutate((todos) => {
-            todos.splice(index, 1);
-            this.saveTodosInLocalStorage();
-          })
-        }
+    if (todo) {
+      const index = this.todosList().indexOf(todo);
+
+      if (index !== -1) {
+        this.todosSignal.mutate((todos) => {
+          todos.splice(index, 1);
+          this.saveTodosInLocalStorage();
+        });
       }
+    }
   }
 }

@@ -9,19 +9,23 @@ import { TodoFormComponent } from '../todo-form/todo-form.component';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatDividerModule, MatIconModule, MatDialogModule ],
+  imports: [
+    CommonModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatIconModule,
+    MatDialogModule,
+  ],
   templateUrl: './header.component.html',
-  styleUrls: []
+  styleUrls: [],
 })
 export class HeaderComponent {
   private dialogService = inject(MatDialog);
 
-  public handleOpenModal(): void{
+  public handleOpenModal(): void {
     this.dialogService.open(TodoFormComponent, {
       width: '50vw',
-      maxHeight: '80vh'
-    })
+      maxHeight: '80vh',
+    });
   }
-
-
 }

@@ -1,5 +1,12 @@
 import { TodoSignalsService } from './services/todo-signals.service';
-import { Component, EventEmitter, Input, OnInit, Output, WritableSignal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  WritableSignal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { TodoCardComponent } from './components/todo-card/todo-card.component';
@@ -21,6 +28,8 @@ export class AppComponent implements OnInit {
   public title = 'todo-list';
   public todoSignal!: WritableSignal<Array<Todo>>;
   public renderTestMessage = false;
+  public isDoned = false;
+
   constructor(private todoSignalsService: TodoSignalsService) {}
 
   // public students: Array<SchoolData> = [];
@@ -53,14 +62,18 @@ export class AppComponent implements OnInit {
     this.outputEvent.emit(this.projectName);
   }
 
-  public handleCreateTodo(todo: Todo) : void {
-    if(todo){
+  public handleCreateTodo(todo: Todo): void {
+    if (todo) {
       this.todoSignalsService.updateTodos(todo);
       this.todoSignal = this.todoSignalsService.todosState;
     }
-}
+  }
 
-
+  public handleCheckisDone(): void {
+    setTimeout(() => {
+      this.isDoned = true;
+    }, 200);
+  }
 
   // public handleFindStudentsById(): void {
   //   this.getStudentsDatas()

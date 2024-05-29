@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
 
   public title = 'todo-list';
   public todoSignal!: WritableSignal<Array<Todo>>;
-
+  public renderTestMessage = false;
   constructor(private todoSignalsService: TodoSignalsService) {}
 
   // public students: Array<SchoolData> = [];
